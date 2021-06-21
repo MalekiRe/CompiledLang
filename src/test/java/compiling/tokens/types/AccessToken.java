@@ -11,7 +11,12 @@ public class AccessToken implements IToken {
 	public String getText() {
 		return name;
 	}
-	
+
+	@Override
+	public int getId() {
+		return 0;
+	}
+
 	@Override
 	public String toString() {
 		return getText();

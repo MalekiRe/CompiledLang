@@ -13,4 +13,13 @@ public class TokenNames {
 			"float", "double",
 			"void"
 	};
+
+	public static final String[] operator_keywords = {
+			"+", "-", "*", "/", "=", "=="
+	};
+
+	public static final String[] special_keywords = {
+			"{", "}", "(", ")", ";"
+	};
+
 }

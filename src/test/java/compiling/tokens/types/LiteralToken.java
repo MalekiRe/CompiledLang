@@ -11,7 +11,12 @@ public class LiteralToken implements IToken {
 	public String getText() {
 		return text;
 	}
-	
+
+	@Override
+	public int getId() {
+		return 2;
+	}
+
 	@Override
 	public String toString() {
 		return getText();

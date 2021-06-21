@@ -11,7 +11,12 @@ public class SpecialCharacterToken implements IToken {
 	public String getText() {
 		return "" + c;
 	}
-	
+
+	@Override
+	public int getId() {
+		return 3;
+	}
+
 	@Override
 	public String toString() {
 		return getText();

@@ -11,7 +11,12 @@ public class KeywordToken implements IToken {
 	public String getText() {
 		return name;
 	}
-	
+
+	@Override
+	public int getId() {
+		return 1;
+	}
+
 	@Override
 	public String toString() {
 		return getText();

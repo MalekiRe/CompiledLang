@@ -14,7 +14,7 @@ public class Compiler {
 	public static void main(String[] args) throws IOException {
 		String str;
 		{
-			FileInputStream src = new FileInputStream("test/src/FieldTest.langsrc");
+			FileInputStream src = new FileInputStream("test/src/MalekFieldTest.langsrc");
 			byte[] bytes = new byte[src.available()];
 			src.read(bytes);
 			src.close();
@@ -58,6 +58,10 @@ public class Compiler {
 			}
 		}
 		System.out.println(Arrays.toString(Tokenizer.tokenize(Cleaner.stripComments(str))));
+		IToken[] tokens = Tokenizer.tokenize(Cleaner.stripComments(str));
+		for(IToken token : tokens) {
+
+		}
 		System.out.println(out);
 //		System.out.println(Arrays.toString(tokenize(str)));
 	}
