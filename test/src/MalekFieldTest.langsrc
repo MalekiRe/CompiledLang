@@ -1,5 +1,10 @@
-int myInt;
-myInt = 1;
-myInt = 2;
-int y = 3;
-y = myInt;
+public static void main() {
+
+
+}
+
+private boolean getNumber(int i) {
+
+return true;
+
+}
