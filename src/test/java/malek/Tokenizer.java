@@ -41,7 +41,7 @@ public class Tokenizer {
                 tokens[currentToken] = new SpecialToken();
                 tokens[currentToken].setText(strings[currentToken]);
             }
-            else if(Character.isDigit(strings[currentToken].toCharArray()[0])
+            else if(strings[currentToken].toCharArray().length > 0 && Character.isDigit(strings[currentToken].toCharArray()[0])
             || (currentToken > 0 && (strings[currentToken-1].toCharArray()[0]) == '\'')) {
                 tokens[currentToken] = new LiteralToken();
                 tokens[currentToken].setText(strings[currentToken]);

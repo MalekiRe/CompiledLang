@@ -1,3 +1,5 @@
-static void main(){
-        int myInt=1;
-}
+int myInt;
+myInt = 1;
+myInt = 2;
+int y = 3;
+y = myInt;

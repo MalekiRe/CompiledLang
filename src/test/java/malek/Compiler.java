@@ -1,11 +1,13 @@
 package malek;
 
 import compiling.Cleaner;
-import malek.nodes.Node;
+import malek.nodes.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static malek.Type.*;
 
@@ -32,49 +34,71 @@ public class Compiler {
             System.out.println(token.getID() + " : " + token.getText());
         }
 
-        boolean isStatic = false;
-        boolean isFinal = false;
+        String staticString = "";
+        String finalString = "";
+        String accessLevel = "P";
         boolean isInClass = false;
         int numberOfCurly = 0;
-        ArrayList<Node> nodes = new ArrayList<>();
-        for(int i = 0; i < tokens.length; i++) {
-            Type returnType = null;
+        boolean isMethod = true;
+       Map<String, Node> nodeSearch = new HashMap<>();
+       ArrayList<Node> operators = new ArrayList<>();
+       for(int i = 0; i < tokens.length; i++) {
+           Type returnType = null;
             if(tokens[i].getID().equals("access")) {
-                if(tokens[i].getText().equals("static")) {
-                    isStatic = true;
-                    i++;
-                }
+             if(tokens[i].getText().equals("static")) {
+                    staticString = "S";
+                 continue;
+             }
                 if(tokens[i].getText().equals("final")) {
-                    isFinal = true;
-                    i++;
-                }
-                switch (tokens[i].getText()) {
-                    case "void" : returnType = VOID; i++; break;
-                    case "int" : returnType = INT; i++; break;
-                    default: i++;
+                    finalString = "F";
+                    continue;
                 }
             }
-            if(tokens[i].getID().equals("id")) {
-                nodes.add(new Node(tokens[i], isStatic, isFinal, returnType));
-                i++;
+           switch (tokens[i].getText()) {
+               case "void" : returnType = VOID; continue;
+               case "int" : returnType = INT;  i++;
+               nodeSearch.put(tokens[i].getText(), new InstanceNode(tokens[i].getText(), accessLevel, staticString, finalString, returnType));
+               operators.add(nodeSearch.get(tokens[i].getText()));
+               i++;
+               continue;
+               case "char" : returnType = CHAR; continue;
+           }
+            if(tokens[i].getText().equals("=")) {
+                if(Character.isDigit(tokens[i+1].getText().toCharArray()[0])) {
+                    if (nodeSearch.get(tokens[i - 1].getText()) == null) {
+                        System.out.println("null at : " + tokens[i - 1].getText());
+                    }
+                    operators.add(new AssigmentOperationNode(nodeSearch.get(tokens[i - 1].getText()), new LiteralNode(tokens[i + 1].getText(), INT)));
+                }
+                else {
+                    if (nodeSearch.get(tokens[i - 1].getText()) == null) {
+                        System.out.println("null at : " + tokens[i - 1].getText());
+                    }
+                    operators.add(new AssigmentOperationNode(nodeSearch.get(tokens[i - 1].getText()), (nodeSearch.get(tokens[i + 1].getText()))));
+                }
             }
+
         }
 
-        System.out.println(nodes.size());
+        System.out.println(nodeSearch.size());
 
-        for (Node node : nodes) {
+        for (Node node : operators) {
             System.out.println(node.toString());
         }
 
+        InstanceNode myInt = new InstanceNode("myInt", "P", "S", "", INT);
+        LiteralNode one = new LiteralNode("1", INT);
+        AssigmentOperationNode setMyIntToOne = new AssigmentOperationNode(myInt, one);
+        System.out.println(setMyIntToOne.toString());
+        InstanceNode y = new InstanceNode("y", "P", "S", "", INT);
+        System.out.println(new AssigmentOperationNode(y, myInt));
 
+//        MethodNode tempMethodNode = new MethodNode("main", "P", "S", "", Type.VOID);
+//        System.out.println(tempMethodNode.toString());
 
 //		System.out.println(Arrays.toString(tokenize(str)));
     }
 
-    private static String compileNode(Node node) {
-        if(node.isStatic) {
 
-        }
-    }
 
 }
