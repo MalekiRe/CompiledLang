@@ -89,7 +89,7 @@ public class Compiler {
         children.add(new ASTToken(CREATE_CLASS, contextTokens, i2));
         for(ASTToken token : children) {
             if(token != null) {
-                System.out.println(token.getString(0));
+                System.out.println(token.getString(1));
             }
         }
 

@@ -1,5 +1,10 @@
 public class FirstClass {
     public static void myMethod() {
+        int x;
+        int y = 5;
+        getHelp(y);
+    }
+    public static boolean getHelp(int i) {
 
     }
     public class SecondClass {

@@ -31,11 +31,45 @@ public class ASTToken {
                 }
                 callWhenCreateMethod(pos+1);
                 break;
+            case INSTANTIATE_VARIABLE:
+                pos = positionInContext+1;
+                callWhenInstantiateVariable(pos);
+                break;
+            case CALL_METHOD:
+                pos = positionInContext+1;
+                callWhenCallMethod(pos);
+                break;
+            case CALL_VARIABLE:
+                break;
+            case OPERATION:
+                break;
+            default:
+
         }
 
 
     }
     public void callWhenCreateMethod(int pos) {
+        defaultCallWhenCreate(pos);
+    }
+    public void callWhenInstantiateVariable(int pos) {
+        for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
+            if(contextTokens[i].value.equals("=")) {
+                children.add(new ASTToken(IDType.OPERATION, contextTokens, i));
+            }
+        }
+    }
+    public void callWhenCreateClass(int pos) {
+        defaultCallWhenCreate(pos);
+    }
+    public void callWhenCallMethod(int pos) {
+        for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
+            if (contextTokens[i].type == HighLevelType.ID) {
+                children.add(new ASTToken(IDType.CALL_VARIABLE, contextTokens, i));
+            }
+        }
+    }
+    private void defaultCallWhenCreate(int pos) {
         int brackets = 1;
         for(int i = pos; i < contextTokens.length && brackets != 0; i++) {
             if (contextTokens[i].value.equals("{")) brackets++;
@@ -72,60 +106,26 @@ public class ASTToken {
                         }
                         break;
                     case INSTANTIATE_VARIABLE:
-                    case CALL_METHOD:
-                    case CALL_VARIABLE:
-                    case NEW_CLASS:
-                    case STATIC_CLASS:
-                }
-            }
-        }
-    }
-    public void callWhenCreateClass(int pos) {
-        int brackets = 1;
-        for(int i = pos; i < contextTokens.length && brackets != 0; i++) {
-            if (contextTokens[i].value.equals("{")) brackets++;
-            if (contextTokens[i].value.equals("}")) brackets--;
-            if(contextTokens[i].type == HighLevelType.ID) {
-                IDType childType = Compiler.getIDType(contextTokens, i);
-                switch (childType) {
-                    case CREATE_CLASS:
-                        children.add(new ASTToken(IDType.CREATE_CLASS, contextTokens, i));
-                        int pos2 = i;
-                        while(!contextTokens[pos2].value.equals("{")) {
-                            pos2++;
-                        }
-                        pos2++;
-                        int brackets2 = 1;
-                        for(int i2 = pos2; brackets2 != 0; i2++) {
-                            if (contextTokens[i2].value.equals("{")) brackets2++;
-                            if (contextTokens[i2].value.equals("}")) brackets2--;
-                            i = i2;
-                        }
-                        break;
-                    case CREATE_METHOD:
-                        children.add(new ASTToken(IDType.CREATE_METHOD, contextTokens, i));
+                        children.add(new ASTToken(IDType.INSTANTIATE_VARIABLE, contextTokens, i));
                         pos2 = i;
-                        while(!contextTokens[pos2].value.equals("{")) {
+                        while(!contextTokens[pos2].value.equals(";")) {
                             pos2++;
                         }
-                        pos2++;
-                        brackets2 = 1;
-                        for(int i2 = pos2; brackets2 != 0; i2++) {
-                            if (contextTokens[i2].value.equals("{")) brackets2++;
-                            if (contextTokens[i2].value.equals("}")) brackets2--;
-                            i = i2;
-                        }
+                        i = pos2;
                         break;
-                    case INSTANTIATE_VARIABLE:
                     case CALL_METHOD:
+                        children.add(new ASTToken(IDType.CALL_METHOD, contextTokens, i));
+                        pos2 = i;
+                        while(!contextTokens[pos2].value.equals(";")) {
+                            pos2++;
+                        }
+                        i = pos2;
+                        break;
                     case CALL_VARIABLE:
                     case NEW_CLASS:
                     case STATIC_CLASS:
                 }
             }
-        }
-        if(brackets == 0) {
-            System.out.println("ended cause brackets were balanced at " + contextTokens[positionInContext].value);
         }
     }
     public String getString(int depth) {

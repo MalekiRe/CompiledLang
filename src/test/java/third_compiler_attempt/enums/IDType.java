@@ -8,5 +8,6 @@ public enum IDType {
     CALL_METHOD,
     INSTANTIATE_VARIABLE,
     CALL_VARIABLE,
+    OPERATION,
     NULL
 }
