@@ -1,0 +1,13 @@
+public class Test {
+  public int number = 12;
+  public int test() {
+    number += 5;
+    number /= 4;
+    number = number + 3;
+    number -= num;
+    number += 4;
+    int num1 = number;
+    num += num;
+    return num * number;
+  }
+}

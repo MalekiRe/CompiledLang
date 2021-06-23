@@ -1,6 +1,8 @@
 package third_compiler_attempt.ast;
 
 import third_compiler_attempt.Compiler;
+import third_compiler_attempt.PunctuationType;
+import third_compiler_attempt.Tokenizer;
 import third_compiler_attempt.enums.HighLevelType;
 import third_compiler_attempt.ContextToken;
 import third_compiler_attempt.enums.IDType;
@@ -40,6 +42,7 @@ public class ASTToken {
                 callWhenCallMethod(pos);
                 break;
             case CALL_VARIABLE:
+                callWhenCallVariable(positionInContext+1);
                 break;
             case OPERATION:
                 callWhenOperation(positionInContext+1);
@@ -54,6 +57,13 @@ public class ASTToken {
         }
 
 
+    }
+    public void callWhenCallVariable(int pos) {
+        for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
+            if(Tokenizer.matchesArray(PunctuationType.operators, contextTokens[i].value)) {
+                children.add(new ASTToken(IDType.OPERATION, contextTokens, i));
+            }
+        }
     }
     public void callWhenStaticClass(int pos) {
         for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
@@ -95,7 +105,7 @@ public class ASTToken {
     }
     public void callWhenInstantiateVariable(int pos) {
         for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
-            if(contextTokens[i].value.equals("=")) {
+            if(Tokenizer.matchesArray(PunctuationType.operators, contextTokens[i].value)) {
                 children.add(new ASTToken(IDType.OPERATION, contextTokens, i));
             }
         }
@@ -115,6 +125,13 @@ public class ASTToken {
         for(int i = pos; i < contextTokens.length && brackets != 0; i++) {
             if (contextTokens[i].value.equals("{")) brackets++;
             if (contextTokens[i].value.equals("}")) brackets--;
+            if (contextTokens[i].type == HighLevelType.OPERATOR) {
+                System.out.println("operator");
+                children.add(new ASTToken(IDType.OPERATION, contextTokens, i));
+                for(int i2 = i; !contextTokens[i2].value.equals(";"); i2++) {
+                    i = i2;
+                }
+            }
             if (contextTokens[i].type == HighLevelType.ID) {
                 IDType childType = Compiler.getIDType(contextTokens, i);
                 switch (childType) {

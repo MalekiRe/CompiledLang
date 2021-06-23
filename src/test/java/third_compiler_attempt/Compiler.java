@@ -1,6 +1,7 @@
 package third_compiler_attempt;
 
 
+import compiling.Cleaner;
 import third_compiler_attempt.ast.ASTToken;
 import third_compiler_attempt.enums.HighLevelType;
 import third_compiler_attempt.enums.IDType;
@@ -20,7 +21,7 @@ public class Compiler {
     public static void main(String[] args) throws IOException {
         String str;
         {
-            FileInputStream src = new FileInputStream("test/src/MalekFieldTest.langsrc");
+            FileInputStream src = new FileInputStream("test/src/Test2.langsrc");
             byte[] bytes = new byte[src.available()];
             src.read(bytes);
             src.close();
@@ -38,48 +39,10 @@ public class Compiler {
         System.out.print("]\n");
         ContextToken[] contextTokens = new ContextToken[tokens.length];
         ArrayList<ASTToken> children = new ArrayList<>();
+        //string = string.replaceAll("^.*-\\s\\s.*$", "-=");
         for (int i = 0; i < tokens.length; i++) {
             contextTokens[i] = new ContextToken(getHighLevelType(tokens[i]), tokens[i]);
         }
-//        int numberOfChildren = 0;
-//        for(int i = 0; i < contextTokens.length; i++) {
-//            if(contextTokens[i].type == HighLevelType.ID) {
-//                System.out.println(contextTokens[i].value);
-//                int i2 = i;
-//                while(!contextTokens[i2].value.equals("{")) {
-//                    i2++;
-//                }
-//                i2++;
-//                int brackets = 1;
-//                numberOfChildren++;
-//                for(int i3 = i2; brackets != 0; i3++) {
-//                    if (contextTokens[i3].value.equals("{")) brackets++;
-//                    if (contextTokens[i3].value.equals("}")) brackets--;
-//                    i = i3;
-//                }
-//
-//            }
-//        }
-//        int filledChildren = 0;
-//        children = new ASTToken[numberOfChildren];
-//        for(int i = 0; i < contextTokens.length; i++) {
-//            if(contextTokens[i].type == HighLevelType.ID) {
-//                int saveStarting = i;
-//                int i2 = i;
-//                while(!contextTokens[i2].value.equals("{")) {
-//                    i2++;
-//                }
-//                i2++;
-//                int brackets = 1;
-//
-//                for(int i3 = i2; brackets != 0; i3++) {
-//                    if (contextTokens[i3].value.equals("{")) brackets++;
-//                    if (contextTokens[i3].value.equals("}")) brackets--;
-//                    i = i3;
-//                }
-//                children[filledChildren] = new ASTToken(contextTokens, saveStarting, 0, i);
-//            }
-      //  }
         int brackets = 1;
         int i2 = 0;
         while(!contextTokens[i2].value.equals("class")) {

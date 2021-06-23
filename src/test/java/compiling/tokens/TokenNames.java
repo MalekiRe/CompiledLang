@@ -18,6 +18,7 @@ public class TokenNames {
 			"+", "-", "*", "/", "=", "=="
 	};
 
+
 	public static final String[] special_keywords = {
 			"{", "}", "(", ")", ";"
 	};

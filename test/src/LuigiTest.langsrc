@@ -1,0 +1,15 @@
+public class Test {
+  public static int number = 12;
+
+  public static int test() {
+    number += 5;
+    number /= 4;
+    number = number + 3;
+    int num = 5;
+    number -= num;
+    number += 4;
+    int num1 = number;
+    num += num;
+    return num * number;
+  }
+}

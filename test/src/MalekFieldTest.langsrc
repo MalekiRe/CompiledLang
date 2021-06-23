@@ -1,6 +1,7 @@
 public class FirstClass {
+    public static int hello = 0;
     public static void myMethod() {
-        int x;
+        public static int x = 5;
         int y = 5;
         getHelp(y);
         getHelp(SecondClass.x);
@@ -19,7 +20,8 @@ public class FirstClass {
             }
         }
     }
-    public static class ThirdClass {
+   public class Test {
+     public static int hello = 0; // you honestly probably don't have this implemented yet
+   }
 
-    }
 }
