@@ -1,10 +1,19 @@
-public static void main() {
+public class FirstClass {
+    public static void myMethod() {
 
+    }
+    public class SecondClass {
 
-}
+        public static final class FourthClassNested {
+            public static final class Class5 {
 
-private boolean getNumber(int i) {
+            }
+            public static final class Class6 {
 
-return true;
+            }
+        }
+    }
+    public static class ThirdClass {
 
+    }
 }
