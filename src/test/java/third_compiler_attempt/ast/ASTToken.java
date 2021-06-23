@@ -42,12 +42,53 @@ public class ASTToken {
             case CALL_VARIABLE:
                 break;
             case OPERATION:
+                callWhenOperation(positionInContext+1);
                 break;
+            case NEW_CLASS:
+                pos = positionInContext+1;
+                callWhenNewClass(pos);
+            case STATIC_CLASS:
+                callWhenStaticClass(positionInContext+1);
             default:
 
         }
 
 
+    }
+    public void callWhenStaticClass(int pos) {
+        for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
+            if(contextTokens[i].value.equals(".")) {
+                i++;
+                switch (Compiler.getIDType(contextTokens, i)) {
+                    case CALL_METHOD:
+                        children.add(new ASTToken(IDType.CALL_METHOD, contextTokens, i));
+                        while(!contextTokens[i].value.equals(";")) {
+                            i++;
+                        }
+                        break;
+                    case CALL_VARIABLE:
+                        children.add(new ASTToken(IDType.CALL_VARIABLE, contextTokens, i));
+                        while(!contextTokens[i].value.equals(";")) {
+                            i++;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+    public void callWhenOperation(int pos) {
+        for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
+            if (contextTokens[i].type == HighLevelType.ID) {
+                children.add(new ASTToken(IDType.CALL_VARIABLE, contextTokens, i));
+            }
+        }
+    }
+    public void callWhenNewClass(int pos) {
+        for(int i = pos; !contextTokens[i].value.equals(";"); i++) {
+            if (contextTokens[i].type == HighLevelType.ID) {
+                children.add(new ASTToken(IDType.CALL_VARIABLE, contextTokens, i));
+            }
+        }
     }
     public void callWhenCreateMethod(int pos) {
         defaultCallWhenCreate(pos);
@@ -122,15 +163,36 @@ public class ASTToken {
                         i = pos2;
                         break;
                     case CALL_VARIABLE:
+                        children.add(new ASTToken(IDType.CALL_VARIABLE, contextTokens, i));
+                        pos2 = i;
+                        while(!contextTokens[pos2].value.equals(";")) {
+                            pos2++;
+                        }
+                        i = pos2;
+                        break;
                     case NEW_CLASS:
+                        children.add(new ASTToken(IDType.NEW_CLASS, contextTokens, i));
+                        pos2 = i;
+                        while(!contextTokens[pos2].value.equals(";")) {
+                            pos2++;
+                        }
+                        i = pos2;
+                        break;
                     case STATIC_CLASS:
+                        children.add(new ASTToken(IDType.STATIC_CLASS, contextTokens, i));
+                        pos2 = i;
+                        while(!contextTokens[pos2].value.equals(";")) {
+                            pos2++;
+                        }
+                        i = pos2;
+                        break;
                 }
             }
         }
     }
     public String getString(int depth) {
         StringBuilder s = new StringBuilder();
-        s.append("token : " + contextTokens[positionInContext].value + " at " + positionInContext + " children are");
+        s.append("token : " + contextTokens[positionInContext].value + " type " + this.type + " at " + positionInContext + " children are");
         for(ASTToken token : children) {
             if(token != null) {
                 s.append("\n");

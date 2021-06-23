@@ -3,12 +3,13 @@ public class FirstClass {
         int x;
         int y = 5;
         getHelp(y);
+        getHelp(SecondClass.x);
     }
     public static boolean getHelp(int i) {
 
     }
     public class SecondClass {
-
+        static final x = 5;
         public static final class FourthClassNested {
             public static final class Class5 {
 
