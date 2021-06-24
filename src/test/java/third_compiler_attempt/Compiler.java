@@ -3,9 +3,8 @@ package third_compiler_attempt;
 
 import compiling.Cleaner;
 import third_compiler_attempt.ast.ASTToken;
-import third_compiler_attempt.enums.HighLevelType;
-import third_compiler_attempt.enums.IDType;
-import third_compiler_attempt.enums.VariableType;
+import third_compiler_attempt.enums.*;
+import third_compiler_attempt.tokens.variable_tokens.MethodVariableToken;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -55,7 +54,7 @@ public class Compiler {
                 System.out.println(token.getString(1));
             }
         }
-
+        System.out.println(new MethodVariableToken(StaticLevel.NON_STATIC, FinalLevel.MUTABLE, ProtectionLevel.PUBLIC, "myInt", INT).getStringRep());
 //        System.out.println(children.get(0).children.get(0).children.get(0).getString());
 
 

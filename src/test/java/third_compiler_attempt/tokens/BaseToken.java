@@ -1,22 +1,14 @@
 package third_compiler_attempt.tokens;
 
-import second_compiler_attempt.enums.VariableType;
+import third_compiler_attempt.enums.VariableType;
 import third_compiler_attempt.ContextToken;
 import third_compiler_attempt.enums.StaticLevel;
 import third_compiler_attempt.enums.FinalLevel;
 import third_compiler_attempt.enums.ProtectionLevel;
 
-public class BaseToken {
-    public final StaticLevel defaultS;
-    public final FinalLevel defaultF;
-    public final ProtectionLevel defaultProtection;
+public abstract class BaseToken {
 
-    public BaseToken(StaticLevel defaultS, FinalLevel defaultF, ProtectionLevel defaultProtection) {
-        this.defaultS = defaultS;
-        this.defaultF = defaultF;
-        this.defaultProtection = defaultProtection;
-    }
-
+    public abstract String getStringRep();
 
     protected static String strProtLvl(second_compiler_attempt.enums.ProtectionLevel protectionLevel) {
         switch (protectionLevel) {
