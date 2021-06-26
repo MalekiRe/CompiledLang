@@ -1,20 +1,21 @@
 package third_compiler_attempt.tokens.variable_tokens;
 
-import third_compiler_attempt.enums.FinalLevel;
-import third_compiler_attempt.enums.ProtectionLevel;
-import third_compiler_attempt.enums.StaticLevel;
+import third_compiler_attempt.AccessLevel;
+import third_compiler_attempt.enums.VariableType;
 import third_compiler_attempt.tokens.InstantiableToken;
 
 public class ClassVariableToken extends VariableToken{
 
-
-    protected ClassVariableToken(StaticLevel defaultS, FinalLevel defaultF, ProtectionLevel defaultProtection, String name, StaticLevel staticLevel, FinalLevel finalLevel, ProtectionLevel protectionLevel) {
-        super(defaultS, defaultF, defaultProtection, staticLevel, finalLevel, protectionLevel, name);
+    VariableType type;
+    protected ClassVariableToken(AccessLevel defaultAccess, AccessLevel attemptedAccess, String name, VariableType type) {
+        super(defaultAccess, attemptedAccess, name);
         InstantiableToken.instantiableMap.put(name, this);
+        this.type = type;
     }
+
 
     @Override
     public String getStringRep() {
-        return null;
+        return "field " + name + " "+ strProtLvl(accessLevel.p) + strStaticLvl(accessLevel.s) + strFinalLvl(accessLevel.f) + "|" + variableTypeToString(type);
     }
 }

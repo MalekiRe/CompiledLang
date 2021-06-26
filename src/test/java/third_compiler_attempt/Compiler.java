@@ -2,17 +2,32 @@ package third_compiler_attempt;
 
 
 import compiling.Cleaner;
+import second_compiler_attempt.tokens.FileToken;
+import third_compiler_attempt.action_tree.ActionFile;
 import third_compiler_attempt.ast.ASTToken;
 import third_compiler_attempt.enums.*;
+import third_compiler_attempt.tokens.BaseToken;
+import third_compiler_attempt.tokens.InstantiableToken;
+import third_compiler_attempt.tokens.class_tokens.ClassToken;
+import third_compiler_attempt.tokens.method_tokens.MethodToken;
+import third_compiler_attempt.tokens.variable_tokens.ClassVariableToken;
 import third_compiler_attempt.tokens.variable_tokens.MethodVariableToken;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static third_compiler_attempt.enums.FinalLevel.FINAL;
+import static third_compiler_attempt.enums.FinalLevel.MUTABLE;
 import static third_compiler_attempt.enums.HighLevelType.VARIABLE;
 import static third_compiler_attempt.enums.HighLevelType.*;
 import static third_compiler_attempt.enums.IDType.*;
+import static third_compiler_attempt.enums.IDType.CLASS;
+import static third_compiler_attempt.enums.ProtectionLevel.PRIVATE;
+import static third_compiler_attempt.enums.ProtectionLevel.PUBLIC;
+import static third_compiler_attempt.enums.StaticLevel.NON_STATIC;
+import static third_compiler_attempt.enums.StaticLevel.STATIC;
 import static third_compiler_attempt.enums.VariableType.*;
 
 
@@ -54,7 +69,38 @@ public class Compiler {
                 System.out.println(token.getString(1));
             }
         }
-        System.out.println(new MethodVariableToken(StaticLevel.NON_STATIC, FinalLevel.MUTABLE, ProtectionLevel.PUBLIC, "myInt", INT).getStringRep());
+        ArrayList<ClassToken> classTokens = new ArrayList<>();
+        AccessLevel tempDefault = new AccessLevel(PUBLIC, NON_STATIC, MUTABLE);
+        for(ASTToken astToken : children) {
+            if(astToken != null) {
+                classTokens.add(ClassToken.createClassToken(contextTokens, astToken, tempDefault));
+            }
+        }
+
+        for(ClassToken classToken : classTokens) {
+            System.out.println(classToken.getStringRep());
+        }
+
+
+
+
+
+
+
+
+
+        //System.out.println(new MethodVariableToken(NON_STATIC, FinalLevel.MUTABLE, PUBLIC, "myInt", INT).getStringRep());
+//        InstantiableToken t = new ClassVariableToken(STATIC, FINAL, PRIVATE, NON_STATIC, MUTABLE, PUBLIC, "classChar", CHAR);
+//        InstantiableToken t2 = new ClassVariableToken(STATIC, FINAL, PRIVATE, NON_STATIC, MUTABLE, PUBLIC, "classInt", INT);
+//        ClassToken classToken = new ClassToken(NON_STATIC, MUTABLE, PUBLIC, NON_STATIC, MUTABLE, PUBLIC, "MyClass");
+//        classToken.addChild(t);
+//        classToken.addChild(t2);
+//
+//        InstantiableToken t3 = new MethodVariableToken(STATIC, FINAL, PRIVATE, "testVar", BOOLEAN);
+//        MethodToken method = new MethodToken(NON_STATIC, MUTABLE, PUBLIC, NON_STATIC, MUTABLE, PUBLIC, "test", BOOLEAN);
+//        method.addChild(t3);
+//        classToken.addChild(method);
+//        System.out.println(classToken.getStringRep());
 //        System.out.println(children.get(0).children.get(0).children.get(0).getString());
 
 
@@ -66,7 +112,7 @@ public class Compiler {
             case "double" : return DOUBLE;
             case "float" : return FLOAT;
             case "boolean" : return BOOLEAN;
-            case "class" : return CLASS;
+            case "class" : return VariableType.CLASS;
             case "void" : return VOID;
         }
         //Bandaid fix for booleans.
@@ -75,7 +121,7 @@ public class Compiler {
             case "false" :
                 return BOOLEAN;
         }
-        return CLASS;
+        return VariableType.CLASS;
     }
     public static IDType getIDType(ContextToken[] contextTokens, int startIndex) {
         if(startIndex <= 1) {
@@ -125,6 +171,9 @@ public class Compiler {
              */
             return INSTANTIATE_VARIABLE;
         }
+//        if(getIDType(contextTokens, startIndex+1) == CALL_VARIABLE) {
+//            return CLASS;
+//        }
         //Everything else.
         return CALL_VARIABLE;
     }

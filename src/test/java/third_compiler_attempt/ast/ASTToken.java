@@ -13,7 +13,7 @@ public class ASTToken {
     ContextToken[] contextTokens;
     public ArrayList<ASTToken> children = new ArrayList<>();
     public final int positionInContext;
-    IDType type;
+    public IDType type;
     public ASTToken(IDType idType, ContextToken[] contextTokens, int positionInContext) {
         this.positionInContext = positionInContext;
         this.contextTokens = contextTokens;
@@ -132,6 +132,15 @@ public class ASTToken {
                     i = i2;
                 }
             }
+            if(i > 0 && contextTokens[i-1].value.equals("new")) {
+                children.add(new ASTToken(IDType.NEW_CLASS, contextTokens, i));
+                int pos2 = i;
+                while(!contextTokens[pos2].value.equals(";")) {
+                    pos2++;
+                }
+                i = pos2;
+                continue;
+            }
             if (contextTokens[i].type == HighLevelType.ID) {
                 IDType childType = Compiler.getIDType(contextTokens, i);
                 switch (childType) {
@@ -203,6 +212,9 @@ public class ASTToken {
                         }
                         i = pos2;
                         break;
+                         default :
+
+                             break;
                 }
             }
         }

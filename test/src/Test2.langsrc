@@ -1,4 +1,10 @@
-public class Test {
+private class Test {
+    private final static class Test2 {
+        class Test3 {
+
+        }
+
+    }
   public int number = 12;
   public int test() {
     number += 5;

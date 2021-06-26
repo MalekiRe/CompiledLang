@@ -1,10 +1,7 @@
 package second_compiler_attempt;
 
 import second_compiler_attempt.enums.*;
-import second_compiler_attempt.tokens.ClassToken;
-import second_compiler_attempt.tokens.MethodToken;
-import second_compiler_attempt.tokens.Token;
-import second_compiler_attempt.tokens.VariableToken;
+import second_compiler_attempt.tokens.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -58,14 +55,7 @@ public class Compiler {
         for(ClassToken classToken : classTokens) {
             System.out.println(classToken.toString());
         }
-        /*
-        for(int i = 0; i < tokens2.length; i++) {
-            if(tokens2[i] != null) {
-                System.out.println(((ClassToken)(tokens2[i])));
-            }
-        }
 
-         */
 
     }
     public static VariableType getVariableTypeFromToken(ContextToken[] contextTokens, int startIndex) {

@@ -1,17 +1,51 @@
-package third_compiler_attempt.tokens;
+package third_compiler_attempt.action_tree;
 
 import third_compiler_attempt.AccessLevel;
-import third_compiler_attempt.ast.ASTToken;
-import third_compiler_attempt.enums.*;
+import third_compiler_attempt.Compiler;
 import third_compiler_attempt.ContextToken;
+import third_compiler_attempt.ast.ASTToken;
+import third_compiler_attempt.enums.HighLevelType;
+import third_compiler_attempt.enums.IDType;
+import third_compiler_attempt.enums.ProtectionLevel;
+import third_compiler_attempt.enums.StaticLevel;
+import third_compiler_attempt.tokens.class_tokens.ClassToken;
+
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileManager;
+import java.util.ArrayList;
+
 
 import static third_compiler_attempt.enums.FinalLevel.FINAL;
+import static third_compiler_attempt.enums.FinalLevel.MUTABLE;
 import static third_compiler_attempt.enums.ProtectionLevel.*;
+import static third_compiler_attempt.enums.StaticLevel.NON_STATIC;
 import static third_compiler_attempt.enums.StaticLevel.STATIC;
-import third_compiler_attempt.Compiler;
-public abstract class BaseToken {
 
-    public abstract String getStringRep();
+public class ActionFile {
+    /*
+    public ArrayList<ASTToken> astTokens;
+    public ContextToken[] contextTokens;
+    public ArrayList<ClassToken> highestLevelClassTokens = new ArrayList<>();
+    AccessLevel tempDefault = new AccessLevel(PUBLIC, NON_STATIC, MUTABLE);
+    public void setClassTokens() {
+        for(ASTToken astToken : astTokens) {
+            if(astToken.type != IDType.CREATE_CLASS) {
+                System.out.println("Compiler Error, non class found isolated in a file.");
+              }
+            else
+            {
+                AccessLevel accessLevel = determineAccessLevel(contextTokens, tempDefault, astToken);
+                highestLevelClassTokens.add(new ClassToken(contextTokens, astToken, tempDefault, accessLevel, getName(contextTokens, astToken)));
+            }
+        }
+    }
+    public String getStringRep() {
+        StringBuilder s = new StringBuilder();
+        for(ClassToken token : highestLevelClassTokens) {
+            s.append(token.getStringRep());
+        }
+        return s.toString();
+    }
     public static String getName(ContextToken[] contextTokens, ASTToken astToken) {
         return contextTokens[astToken.positionInContext].value;
     }
@@ -29,7 +63,6 @@ public abstract class BaseToken {
                     case "final" : accessLevel.f = FINAL;
                 }
             }
-            pos--;
         }
         return accessLevel;
     }
@@ -38,64 +71,20 @@ public abstract class BaseToken {
         return setAccessLevels(defaultAccess, newAccess);
     }
     public static AccessLevel setAccessLevels(AccessLevel defaultAccess, AccessLevel newAccess) {
-        System.out.println(newAccess.p);
-        if(defaultAccess.p == PRIVATE) {
-            newAccess.p = PRIVATE;
-        }
         if(defaultAccess.s == STATIC) {
             newAccess.s = STATIC;
         }
         if(defaultAccess.f == FINAL) {
             newAccess.f = FINAL;
         }
-        if(newAccess.p == PUBLIC && defaultAccess.p == PROTECTED) {
+        if(newAccess.p == ProtectionLevel.PUBLIC && defaultAccess.p == PROTECTED) {
             newAccess.p = PROTECTED;
         }
-        if(newAccess.s == null) {
-            newAccess.s = defaultAccess.s;
-        }
-        if(newAccess.p == null) {
-            newAccess.p = defaultAccess.p;
-            newAccess.p = PUBLIC;
-        }
-        if(newAccess.f == null) {
-            newAccess.f = defaultAccess.f;
+        if(newAccess.p == PROTECTED && defaultAccess.p == PRIVATE) {
+            newAccess.p = PRIVATE;
         }
         return newAccess;
     }
-    protected static String strProtLvl(ProtectionLevel protectionLevel) {
-        switch (protectionLevel) {
-            case PUBLIC: return "P";
-            case PRIVATE: return "I";
-            case PROTECTED: return "O";
-        }
-        return "";
-    }
-    public static String strStaticLvl(StaticLevel staticLevel) {
-        switch (staticLevel) {
-            case STATIC: return "S";
-            case NON_STATIC: return "";
-        }
-        return "";
-    }
-    public static String strFinalLvl(FinalLevel finalLevel) {
-        switch (finalLevel) {
-            case FINAL: return "F";
-            case MUTABLE: return "";
-        }
-        return "";
-    }
-    public String variableTypeToString(VariableType type) {
-        //DOESNT HANDLE CLASS VARIABLE TYPE
-        switch (type) {
-            case BOOLEAN: return "B";
-            case FLOAT: return "F";
-            case DOUBLE: return "D";
-            case INT: return "I";
-            case CHAR: return "C";
-            case VOID: return "V";
-        }
-        System.out.println("TRIED TO CONVERT CLASS VARIABLE TYPE TO STRING ERROR");
-        return "";
-    }
+
+     */
 }
